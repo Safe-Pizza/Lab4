@@ -1,4 +1,15 @@
-﻿using Microsoft.ML.Data;
+﻿/**
+ * Filnamn: PassengerData.cs
+ * Författare: Hanna Lindkvist
+ * Datum: 2026-10-12
+ * Kurs: DT071G
+ * 
+ * Beskrivning: Klass som representerar en passagerares data utifrån en CSV-fil. 
+ * Innehåller egenskaper för lagring av överlevnad, passagerarklass, kön, ålder och antal föräldrar/barn ombord.
+ * 
+ * **/
+
+using Microsoft.ML.Data;
 
 namespace Lab4
 {
@@ -9,7 +20,5 @@ namespace Lab4
         [LoadColumn(4)] public string Sex { get; set; } = "";
         [LoadColumn(5)] public float Age { get; set; }
         [LoadColumn(7)] public float Parch { get; set; }
-        [LoadColumn(9)] public float Fare { get; set; }
-        [LoadColumn(11)] public string Embarked { get; set; }
     }
 }
