@@ -20,7 +20,5 @@ namespace Lab4
         [LoadColumn(4)] public string Sex { get; set; } = "";
         [LoadColumn(5)] public float Age { get; set; }
         [LoadColumn(7)] public float Parch { get; set; }
-        [LoadColumn(9)] public float Fare { get; set; }
-        [LoadColumn(11)] public string Embarked { get; set; } = "";
     }
 }

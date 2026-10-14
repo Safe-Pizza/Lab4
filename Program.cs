@@ -56,26 +56,13 @@ var pipeline =
     .Append(mlContext.Transforms.ReplaceMissingValues(
         outputColumnName: "PclassFilled",
         inputColumnName: nameof(PassengerData.Pclass),
-        replacementMode: MissingValueReplacingEstimator.ReplacementMode.Mean))
-    .Append(mlContext.Transforms.ReplaceMissingValues(
-        outputColumnName: "FareFilled",
-        inputColumnName: nameof(PassengerData.Fare),
-        replacementMode: MissingValueReplacingEstimator.ReplacementMode.Mean))
-    .Append(mlContext.Transforms.Categorical.OneHotEncoding(
-        outputColumnName: "EmbarkedEncoded",
-        inputColumnName: nameof(PassengerData.Embarked))
-    .Append(mlContext.Transforms.ReplaceMissingValues(
-        outputColumnName: "EmbarkedFilled",
-        inputColumnName: "EmbarkedEncoded",
         replacementMode: MissingValueReplacingEstimator.ReplacementMode.DefaultValue))
     .Append(mlContext.Transforms.Concatenate(
         "Features",
         "AgeFilled",
         "SexEncoded",
         "ParentChildFilled",
-        "PclassFilled",
-        "FareFilled",
-        "EmbarkedFilled"
+        "PclassFilled"
     ))
     .Append(mlContext.Transforms.NormalizeMinMax("Features"))
     .Append(
@@ -84,7 +71,6 @@ var pipeline =
                 labelColumnName: nameof(PassengerData.Survived),
                 featureColumnName: "Features"
             )
-    )
     );
 
 // Validate with 5-fold cross validation.
@@ -175,8 +161,6 @@ while (true) //Loop som körs tills användaren väljer att avsluta programmet
             string sexInput = GetSexInput();
             float pclassInput = GetPclassInput();
             float parchInput = GetParchInput();
-            float fareInput = GetFareInput();
-            string embarkedInput = GetEmbarkedInput();
 
             // Skapa en ny passagerare för förutsägelse
             PassengerData newPassenger = new()
@@ -184,9 +168,7 @@ while (true) //Loop som körs tills användaren väljer att avsluta programmet
                 Age = ageInput,
                 Sex = sexInput,
                 Pclass = pclassInput,
-                Parch = parchInput,
-                Fare = fareInput,
-                Embarked = embarkedInput
+                Parch = parchInput
             };
             // Skapa en prediktionsmotor
             var predictionEngine =
@@ -320,52 +302,6 @@ static float GetParchInput()
         else
         {
             Console.WriteLine("Ogiltigt antal föräldrar/barn. Försök igen.");
-        }
-    }
-}
-
-static float GetFareInput()
-{
-    while (true)
-    {
-        Console.Write("Biljettpris: ");
-        string? fareInput = Console.ReadLine();
-        if (!string.IsNullOrEmpty(fareInput) && float.TryParse(fareInput, out float fare))
-        {
-            if (fare >= 0)
-            {
-                return fare;
-            }
-            else
-            {
-                Console.WriteLine("Biljettpriset måste vara ett positivt värde. Försök igen.");
-            }
-        }
-        else
-        {
-            Console.WriteLine("Ogiltigt biljettpris. Försök igen.");
-        }
-    }
-}
-
-static string GetEmbarkedInput()
-{
-    while (true)
-    {
-        Console.Write("Hamn för påstigning (S - Southampton, C - Cherbourg, Q - Queenstown): ");
-        string? embarkedInput = Console.ReadLine();
-        if (!string.IsNullOrEmpty(embarkedInput))
-        {
-            if (string.Equals(embarkedInput, "C", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(embarkedInput, "Q", StringComparison.OrdinalIgnoreCase) ||
-                string.Equals(embarkedInput, "S", StringComparison.OrdinalIgnoreCase))
-            {
-                return embarkedInput.ToUpper();
-            }
-            else
-            {
-                Console.WriteLine("Använd S, C eller Q för att ange hamn för påstigning.");
-            }
         }
     }
 }
