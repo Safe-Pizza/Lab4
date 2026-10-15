@@ -188,7 +188,7 @@ while (true) //Loop som körs tills användaren väljer att avsluta programmet
                     ? "Modellen tror att passageraren överlever."
                     : "Modellen tror att passageraren inte överlever."
             );
-            Console.WriteLine($"Sannolikhet: {prediction.Probability:P1}");
+            Console.WriteLine($"Sannolikhet för överlevnad: {prediction.Probability:P1}");
             Console.ResetColor();
 
             Console.WriteLine($"\nTryck på valfri tangent för att återgå till huvudmenyn...");
